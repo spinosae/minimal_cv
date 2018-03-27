@@ -42,9 +42,9 @@
 %
 \NewDocumentCommand{\getlogo}{O{12mm}}{%
 	\ifx\@logo\empty
-		\relax
-		\else
-		\includegraphics[align=c,width=#1]{\@logo}
+	\relax
+	\else
+	\includegraphics[align=c,width=#1]{\@logo}
 	\fi
 }
 %
@@ -63,26 +63,26 @@
 }
 %
 %
+\newlength{\currentparskip}
 \newcolumntype{R}[1]{>{\raggedleft}p{#1}}
-\newcolumntype{L}[1]{>{\raggedright}p{#1}}
-\NewDocumentCommand{\showinfo}{}{%
-	\begin{tabular}{R{\cola}L{\colb}}%
-		\getlogo & \parbox{\colb}{\infolist}
-	\end{tabular}
-	\vspace{3em}
+\newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
+\NewDocumentCommand{\showinfo}{O{3em}}{%
+	\cvitem{\getlogo}{\parbox{\colb}{\infolist}}
+	\vspace{#1}
 }
 %
 %
 \NewDocumentCommand{\starsep}{m}{
 	\ifx#1\BooleanFalse 
-		\vline height +8pt width 1pt 
+	\vline height +8pt width 1pt 
 	\else 
-		\relax 
+	\relax 
 	\fi
 }
 %
 %
-\NewDocumentCommand{\cvitem}{smm}{%
+\NewDocumentCommand{\cvitem}{sm+m}{%
+	\setlength{\currentparskip}{\parskip}
 	\begin{tabular}{R{\cola}!{\starsep{#1}}L{\colb}}%
 		#2 & #3
 	\end{tabular}
@@ -95,14 +95,13 @@
 	\addcontentsline{toc}{section}{#2}
 	\cvitem*{\sffamily\bfseries\MakeUppercase{#2}}{\marker}%
 	\par
-	\vspace{0.3em} %
+	%\vspace{0.3em} %
 }
 %
 %
-\NewDocumentCommand{\cventryheader}{mm}{\textsf{\textbf{#1\comma{#2}}#2}\par}
-\NewDocumentCommand{\cventry}{mmmm}{%
-	\addcontentsline{toc}{section}{#2}
-	\cvitem{\small\sffamily#1}{\cventryheader{#2}{#3}\vspace{1ex}#4}
+\NewDocumentCommand{\cventry}{mmm+mO{0ex}}{%
+	\par
+	\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\comma{#3}}#3}\vspace{#5}\par#4}
 	\vspace{1em}
 	\par
 }
@@ -110,9 +109,9 @@
 %
 \NewDocumentCommand{\comma}{m}{%
 	\if\relax\detokenize{#1}\relax
-		\relax
+	\relax
 	\else
-		,
+	,
 	\fi
 }
 %
