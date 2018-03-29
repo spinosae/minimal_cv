@@ -67,7 +67,9 @@
 \newcolumntype{R}[1]{>{\raggedleft}p{#1}}
 \newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
 \NewDocumentCommand{\showinfo}{O{3em}}{%
+	\par
 	\cvitem{\getlogo}{\parbox{\colb}{\infolist}}
+	\par
 	\vspace{#1}
 }
 %
@@ -101,17 +103,17 @@
 %
 \NewDocumentCommand{\cventry}{mmm+mO{0ex}}{%
 	\par
-	\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\comma{#3}}#3}\vspace{#5}\par#4}
+	\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\notemptythen{#3}{,}}#3}\notemptythen{#2#3}{\vspace{#5}\par}#4}
 	\vspace{1em}
 	\par
 }
 %
 %
-\NewDocumentCommand{\comma}{m}{%
+\NewDocumentCommand{\notemptythen}{m+m}{%
 	\if\relax\detokenize{#1}\relax
 	\relax
 	\else
-	,
+	#2
 	\fi
 }
 %
