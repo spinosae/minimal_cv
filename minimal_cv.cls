@@ -21,8 +21,11 @@
 \newlength{\cola}
 \newlength{\colb}
 %
-\setlength{\cola}{0.2\textwidth}
-\setlength{\colb}{\textwidth - \cola - 2em}
+\NewDocumentCommand{\recalculate}{}{%
+	\setlength{\cola}{0.2\textwidth}
+	\setlength{\colb}{\textwidth - \cola - 2em}
+}
+\recalculate
 %
 \def\@undef{\color{red} undefined}
 \def\@name{\@undef}
@@ -30,6 +33,7 @@
 \def\@email{\@undef}
 \def\@website{\@undef}
 \def\@address{\@undef}
+\def\@github{\@undef}
 \def\@logo{}
 %
 \NewDocumentCommand{\name}{m}{\def\@name{#1}}
@@ -38,6 +42,7 @@
 \NewDocumentCommand{\website}{m}{\def\@website{#1}}
 \NewDocumentCommand{\address}{m}{\def\@address{#1}}
 \NewDocumentCommand{\logo}{m}{\def\@logo{#1}}
+\NewDocumentCommand{\github}{m}{\def\@github{#1}}
 %
 %
 \NewDocumentCommand{\getlogo}{O{12mm}}{%
@@ -57,6 +62,7 @@
 	\begin{itemize*}[itemjoin=\hspace{2ex},label=\rule{4pt}{4pt},leftmargin=*]
 		\item \mbox{\@phone}
 		\item \mbox{\@email}
+		\item \mbox{\@github}
 		\item \mbox{\@website}
 		\item \mbox{\@address}
 	\end{itemize*}
@@ -66,17 +72,21 @@
 \newlength{\currentparskip}
 \newcolumntype{R}[1]{>{\raggedleft}p{#1}}
 \newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
-\NewDocumentCommand{\showinfo}{O{3em}}{%
+\NewDocumentCommand{\showinfo}{sO{3em}}{%
 	\par
-	\cvitem{\getlogo}{\parbox{\colb}{\infolist}}
+	\ifx#1\BooleanFalse
+	\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
+	\else
+	\parbox{\colb}{\infolist}
+	\fi
 	\par
-	\vspace{#1}
+	\vspace{#2}
 }
 %
 %
-\NewDocumentCommand{\starsep}{m}{
+\NewDocumentCommand{\notstarthen}{mm}{
 	\ifx#1\BooleanFalse 
-	\vline height +8pt width 1pt 
+	#2
 	\else 
 	\relax 
 	\fi
@@ -85,7 +95,7 @@
 %
 \NewDocumentCommand{\cvitem}{sm+m}{%
 	\setlength{\currentparskip}{\parskip}
-	\begin{tabular}{R{\cola}!{\starsep{#1}}L{\colb}}%
+	\begin{tabular}{R{\cola}!{\notstarthen{#1}{\vline height +8pt width 1pt }}L{\colb}}%
 		#2 & #3
 	\end{tabular}
 }
