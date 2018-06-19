@@ -114,7 +114,7 @@
 \NewDocumentCommand{\cventry}{mmm+mO{0ex}}{%
 	\par
 	\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\notemptythen{#3}{,}}#3}\notemptythen{#2#3}{\vspace{#5}\par}#4}
-	\vspace{1em}
+	\vspace{1ex}
 	\par
 }
 %
