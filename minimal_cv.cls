@@ -73,14 +73,16 @@
 \newcolumntype{R}[1]{>{\raggedleft}p{#1}}
 \newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
 \NewDocumentCommand{\showinfo}{sO{3em}}{%
+	{ \small
 	\par
 	\ifx#1\BooleanFalse
-	\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
+	\cvitem*{\getlogo[10mm]}{\parbox{\colb}{\infolist}}
 	\else
 	\parbox{\colb}{\infolist}
 	\fi
 	\par
 	\vspace{#2}
+	}
 }
 %
 %
@@ -107,7 +109,7 @@
 	\addcontentsline{toc}{section}{#2}
 	\cvitem*{\sffamily\bfseries\MakeUppercase{#2}}{\marker}%
 	\par
-	%\vspace{0.3em} %
+	\vspace{-0.2em} %
 }
 %
 %
@@ -134,11 +136,11 @@
 %
 %
 \NewEnviron{entrylist}{%
-	\parbox{\colb}{\begin{itemize}[leftmargin=*,itemsep=-2pt,topsep=0pt,]\BODY\end{itemize}}
+	\parbox{\colb}{\begin{itemize}[leftmargin=*,itemsep=-2pt,topsep=0pt]\BODY\end{itemize}}
 }
 %
 %
-\newcommand{\desclabel}[1]{\textsf{\textbf{#1:}}}
+\newcommand{\desclabel}[1]{\emph{#1:}}
 
 
 
