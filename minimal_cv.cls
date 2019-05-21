@@ -58,16 +58,18 @@
 %
 
 \NewDocumentCommand{\infolist}{}{%
-	\ttfamily
-	\textsc{\Large\@name}
+	\begin{flushleft}
+	\sffamily
+	\textbf{\large\@name}
 	\par
-	\begin{itemize*}[itemjoin=\hspace{2ex},label=\rule{4pt}{4pt},leftmargin=*]
+	\begin{itemize*}[itemjoin=\hspace{3ex},label=\rule{4pt}{4pt}]
 		\item \mbox{\@phone}
 		\item \mbox{\@email}
 		\item \mbox{\@github}
 		\item \mbox{\@website}
 		\item \mbox{\@address}
 	\end{itemize*}
+	\end{flushleft}
 }
 %
 %
@@ -80,7 +82,7 @@
 	\ifx#1\BooleanFalse
 	\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
 	\par
-	\vspace{1ex}
+	\vspace{-1ex}
 	\cvitem*{}{\parbox{\colb}{\emph{\@statement}}}
 	\else
 	\parbox{\colb}{\infolist}
