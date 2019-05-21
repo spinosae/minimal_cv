@@ -35,6 +35,7 @@
 \def\@address{\@undef}
 \def\@github{\@undef}
 \def\@logo{}
+\def\@statement{}
 %
 \NewDocumentCommand{\name}{m}{\def\@name{#1}}
 \NewDocumentCommand{\phone}{m}{\def\@phone{#1}}
@@ -43,6 +44,7 @@
 \NewDocumentCommand{\address}{m}{\def\@address{#1}}
 \NewDocumentCommand{\logo}{m}{\def\@logo{#1}}
 \NewDocumentCommand{\github}{m}{\def\@github{#1}}
+\NewDocumentCommand{\statement}{m}{\def\@statement{#1}}
 %
 %
 \NewDocumentCommand{\getlogo}{O{12mm}}{%
@@ -73,10 +75,13 @@
 \newcolumntype{R}[1]{>{\raggedleft}p{#1}}
 \newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
 \NewDocumentCommand{\showinfo}{sO{3em}}{%
-	{ \small
+	{ %\small
 	\par
 	\ifx#1\BooleanFalse
-	\cvitem*{\getlogo[10mm]}{\parbox{\colb}{\infolist}}
+	\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
+	\par
+	\vspace{1ex}
+	\cvitem*{}{\parbox{\colb}{\emph{\@statement}}}
 	\else
 	\parbox{\colb}{\infolist}
 	\fi
