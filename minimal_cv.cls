@@ -1,4 +1,4 @@
-\ProvidesClass{minimal_cv}[2016/01/05 my custom cv class]
+\ProvidesClass{minimal_cv/minimal_cv}[2016/01/05 my custom cv class]
 %
 \NeedsTeXFormat{LaTeX2e}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -49,9 +49,9 @@
 %
 \NewDocumentCommand{\getlogo}{O{12mm}}{%
 	\ifx\@logo\empty
-	\relax
+		\relax
 	\else
-	\includegraphics[align=c,width=#1]{\@logo}
+		\includegraphics[align=c,width=#1]{\@logo}
 	\fi
 }
 %
@@ -59,16 +59,16 @@
 
 \NewDocumentCommand{\infolist}{}{%
 	\begin{flushleft}
-	\sffamily
-	\textbf{\large\@name}
-	\par
-	\begin{itemize*}[itemjoin=\hspace{3ex},label=\rule{4pt}{4pt}]
-		\item \mbox{\@phone}
-		\item \mbox{\@email}
-		\item \mbox{\@github}
-		\item \mbox{\@website}
-		\item \mbox{\@address}
-	\end{itemize*}
+		\sffamily
+		\textbf{\large\@name}
+		\par
+		\begin{itemize*}[itemjoin=\hspace{3ex},label=\rule{4pt}{4pt}]
+			\item \mbox{\@phone}
+			\item \mbox{\@email}
+			\item \mbox{\@github}
+			\item \mbox{\@website}
+			\item \mbox{\@address}
+		\end{itemize*}
 	\end{flushleft}
 }
 %
@@ -77,27 +77,25 @@
 \newcolumntype{R}[1]{>{\raggedleft}p{#1}}
 \newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
 \NewDocumentCommand{\showinfo}{sO{3em}}{%
-	{ %\small
 	\par
 	\ifx#1\BooleanFalse
-	\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
-	\par
-	\vspace{-1ex}
-	\cvitem*{}{\parbox{\colb}{\emph{\@statement}}}
+		\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
+		\par
+		\vspace{-1ex}
+		\cvitem*{}{\parbox{\colb}{\emph{\@statement}}}
 	\else
-	\parbox{\colb}{\infolist}
+		\parbox{\colb}{\infolist}
 	\fi
 	\par
 	\vspace{#2}
-	}
 }
 %
 %
 \NewDocumentCommand{\notstarthen}{mm}{
-	\ifx#1\BooleanFalse 
-	#2
-	\else 
-	\relax 
+	\ifx#1\BooleanFalse
+		#2
+	\else
+		\relax
 	\fi
 }
 %
@@ -121,18 +119,18 @@
 %
 %
 \NewDocumentCommand{\cventry}{mmm+mO{0ex}}{%
-	\par
-	\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\notemptythen{#3}{,}}#3}\notemptythen{#2#3}{\vspace{#5}\par}#4}
-	\vspace{1ex}
-	\par
+\par
+\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\notemptythen{#3}{,}}#3}\notemptythen{#2#3}{\vspace{#5}\par}#4}
+\vspace{1ex}
+\par
 }
 %
 %
 \NewDocumentCommand{\notemptythen}{m+m}{%
 	\if\relax\detokenize{#1}\relax
-	\relax
+		\relax
 	\else
-	#2
+		#2
 	\fi
 }
 %
