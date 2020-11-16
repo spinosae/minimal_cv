@@ -6,7 +6,7 @@
 \LoadClass{article}
 %
 %
-\RequirePackage[a4paper,left=1.5cm,right=2.5cm,top=1.5cm,bottom=2cm]{geometry}
+\RequirePackage[left=1.5cm,right=1cm,top=1.5cm,bottom=2cm]{geometry}
 \RequirePackage{graphicx}
 \RequirePackage{color}
 \RequirePackage{array}
@@ -16,14 +16,15 @@
 \RequirePackage[bookmarks=true]{hyperref}
 \RequirePackage{xparse}
 \RequirePackage{graphbox}
+\RequirePackage{titlesec}
 %\RequirePackage[none]{hyphenat}
 %
 \newlength{\cola}
 \newlength{\colb}
 %
 \NewDocumentCommand{\recalculate}{}{%
-	\setlength{\cola}{0.2\textwidth}
-	\setlength{\colb}{\textwidth - \cola - 2em}
+	\setlength{\cola}{0.25\textwidth}
+	\setlength{\colb}{\textwidth - \cola - 4pt}
 }
 \recalculate
 %
@@ -91,6 +92,19 @@
 }
 %
 %
+\NewDocumentCommand{\showinfol}{O{3em}}{%
+	\newlength{\logowidth}
+	\setlength{\logowidth}{12mm}
+	\begin{minipage}{\logowidth}
+		\includegraphics[align=c,width=\logowidth]{\@logo}
+	\end{minipage}
+	\hspace{2ex}
+	\begin{minipage}{\linewidth - \logowidth - 2em}
+		\infolist
+	\end{minipage}
+}
+%
+%
 \NewDocumentCommand{\notstarthen}{mm}{
 	\ifx#1\BooleanFalse
 		#2
@@ -106,17 +120,29 @@
 		#2 & #3
 	\end{tabular}
 }
+
 %
 %
-\NewDocumentCommand{\marker}{}{\rule{3mm}{3mm}}
-\RenewDocumentCommand{\section}{sm}{%
-	\par
-	\addcontentsline{toc}{section}{#2}
-	\cvitem*{\sffamily\bfseries\MakeUppercase{#2}}{\marker}%
-	\par
-	\vspace{-0.2em} %
+% \NewDocumentCommand{\marker}{}{\rule{3mm}{3mm}}
+% \RenewDocumentCommand{\section}{m}{%
+% 	\par
+% 	\addcontentsline{toc}{section}{#2}
+% 	\cvitem*{\sffamily\bfseries\MakeUppercase{#2}}{\marker}%
+% 	\par
+% 	\vspace{-0.2em} %
+% }
+\titleformat{\section}{\sffamily\bfseries}{}{0pt}{\MakeUppercase}[\rule{\textwidth}{1pt}]
+\RenewDocumentCommand{\subsection}{m o o}{%
+	\addcontentsline{toc}{subsection}{#1 #2 #3}
+	\textsf{\textbf{#1}, #2 \hfill \small{#3}}
 }
-%
+\titleformat{\subsubsection}{\sffamily\centering}{}{0pt}{}
+% \titleformat{\subsubsection}[wrap]
+% {\sffamily}
+% {}{0em}{}[\vspace{-1pt}]
+
+% \titlespacing{\subsubsection}{12pc}{1.5ex plus .1ex minus .2ex}{1pc}
+%}
 %
 \NewDocumentCommand{\cventry}{mmm+mO{0ex}}{%
 \par
@@ -141,11 +167,24 @@
 %
 %
 \NewEnviron{entrylist}{%
-	\parbox{\colb}{\begin{itemize}[leftmargin=*,itemsep=-2pt,topsep=0pt]\BODY\end{itemize}}
+	\parbox{\colb}{\begin{itemize}[leftmargin=*,itemsep=-2pt]\raggedright\BODY\end{itemize}}
 }
 %
 %
+\NewEnviron{leftcol}{%
+	\noindent
+	\begin{minipage}[t]{\colb}
+		\raggedright
+		\BODY
+	\end{minipage}
+}
+\NewEnviron{rightcol}{%
+	\begin{minipage}[t]{\cola}
+		\BODY
+	\end{minipage}
+}
 \newcommand{\desclabel}[1]{\emph{#1:}}
+
 
 
 
