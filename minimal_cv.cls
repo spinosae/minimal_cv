@@ -55,36 +55,9 @@
 		\includegraphics[align=c,width=#1]{\@logo}
 	\fi
 }
-%
-%
-\NewDocumentCommand{\infolist}{}{%
-	\begin{flushleft}
-		\sffamily
-		\textbf{\large\@name}
-		\par
-		\@statement
-	\end{flushleft}
-}
-%
-%
-\newlength{\currentparskip}
-\newcolumntype{R}[1]{>{\raggedleft}p{#1}}
-\newcolumntype{L}[1]{>{\raggedright\parskip=\currentparskip}p{#1}}
-\NewDocumentCommand{\showinfo}{sO{3em}}{%
-	\par
-	\ifx#1\BooleanFalse
-		\cvitem*{\getlogo[12mm]}{\parbox{\coll}{\infolist}}
-		\par
-		\vspace{-1ex}
-		\cvitem*{}{\parbox{\coll}{\emph{\@statement}}}
-	\else
-		\parbox{\coll}{\infolist}
-	\fi
-	\par
-	\vspace{#2}
-}
-%
-%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Column layout %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \newlength{\colr}
 \newlength{\coll}
 \NewDocumentCommand{\layout}{m O{5mm}}{%
@@ -96,92 +69,61 @@
 %
 \NewDocumentEnvironment{leftcol}{O{0.7}}{%
 	\noindent
-	\begin{minipage}[t]{\coll}
-		\raggedright \
+	\begin{minipage}[t]{\coll}\raggedright \
 }{%
 	\end{minipage}%
 	\hfill
 }
-\NewEnviron{rightcol}{%
+\NewDocumentEnvironment{rightcol}{}{%
 	\newlength{\availablev}
 	\setlength{\availablev}{%
 		\the\dimexpr\textheight-0.2in-\pagetotal\relax
 	}%
-	\begin{minipage}[t]{\colr}
-		\ \BODY
+	\begin{minipage}[t]{\colr}\
+}{%
 	\end{minipage}
 }
-%
-%
-\NewDocumentCommand{\showinfol}{O{3em}}{%
-	\newlength{\logowidth}
-	\setlength{\logowidth}{14mm}
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Personal information %
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\logowidth}
+\setlength{\logowidth}{14mm}
+\NewDocumentCommand{\personnel}{}{%
+	\includegraphics[align=c,width=\logowidth]{\@logo}
+	\hfill
+	\begin{minipage}[c]{\linewidth - \logowidth - 2ex}
+		\sffamily
+		\textbf{\sffamily\large\@name}
+		\par
+		\vspace{1ex}
+		\@statement
+	\end{minipage}
+}
+\NewDocumentCommand{\contacts}{}{%
+	\begin{itemize}[leftmargin=*,itemsep=-2pt,label={}] \raggedleft
+		\sffamily
+		\item \@phone 
+		\item \@email
+		\item \@address
+	\end{itemize}
+}
+\NewDocumentCommand{\showinfo}{O{3em}}{%
 	\noindent
 	\begin{minipage}[b][][c]{\coll}
-		\includegraphics[align=c,width=\logowidth]{\@logo}
-		\hfill
-		\begin{minipage}[c]{\linewidth - \logowidth - 2ex}
-			% \raggedright
-			\sffamily
-			\textbf{\sffamily\large\@name}
-			\par
-			\vspace{1ex}
-			\@statement
-		\end{minipage}
+		\personnel
 	\end{minipage}
 	\hfill
 	\begin{minipage}[b]{\colr}
-		% \sffamily
-		% \begin{tabular}[b]{R{\linewidth - 2em} p{2em}}
-		% 	\@phone & \faPhone\\
-		% 	\@email & \faEnvelope\\
-		% 	\@address & \faHome\\
-		% \end{tabular}
-		\begin{itemize}[leftmargin=*,itemsep=-2pt,label={}] \raggedleft
-			\sffamily
-			% \item[\faPhone] \@phone 
-			% \item[\faInbox] \@email
-			% % \item \mbox{\@github}
-			% % \item \mbox{\@website}
-			% \item[\faHome] \@address
-			\item \@phone 
-			\item \@email
-			% \item \mbox{\@github}
-			% \item \mbox{\@website}
-			\item \@address
-		\end{itemize}
+		\contacts
 	\end{minipage}
 }
-%
-%
-\NewDocumentCommand{\notstarthen}{mm}{
-	\ifx#1\BooleanFalse
-		#2
-	\else
-		\relax
-	\fi
-}
-%
-%
-\NewDocumentCommand{\cvitem}{sm+m}{%
-	\setlength{\currentparskip}{\parskip}
-	\begin{tabular}{R{\colr}!{\notstarthen{#1}{\vline height +8pt width 1pt }}L{\coll}}%
-		#2 & #3
-	\end{tabular}
-}
-
-%
-%
-% \NewDocumentCommand{\marker}{}{\rule{3mm}{3mm}}
-% \RenewDocumentCommand{\section}{m}{%
-% 	\par
-% 	\addcontentsline{toc}{section}{#2}
-% 	\cvitem*{\sffamily\bfseries\MakeUppercase{#2}}{\marker}%
-% 	\par
-% 	\vspace{-0.2em} %
-% }
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Section style  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Section
 \titleformat{\section}{\sffamily\bfseries}{}{0pt}{\MakeUppercase}[\titlerule]
 \titlespacing*{\section}{0pt}{1em}{1em}
+% Subsection
 \RenewDocumentCommand{\subsection}{m o o}{%
 	\phantomsection
 	\addcontentsline{toc}{subsection}{#1 \IfNoValueF{#2}{#2}}%
@@ -189,66 +131,35 @@
 	\par
 	\smallskip
 }
-% \titlespacing*{\subsection}{0pt}{2ex plus 4pt minus 4pt}{2ex plus 4pt minus 4pt}
-% \NewDocumentCommand{\titleemph}{m}{$\ast$ #1 $\ast$}
-% \titleformat{\subsubsection}{\mdseries\sffamily\centering}{}{0pt}{}
+% Subsubsection
 \RenewDocumentCommand{\subsubsection}{m}{%
 	\phantomsection
 	\addcontentsline{toc}{subsubsection}{#1}%
 	{\centering \textsf{\textmd{$\ast$ #1 $\ast$}} \par}%
 	\smallskip
 }
-% \titlespacing*{\subsubsection}{0pt}{1em}{1em}
-% \titlespacing*{\subsubsection}{0pt}{0.1\baselineskip plus 4pt minus 4pt}{0.4\baselineskip plus 4pt minus 4pt}
-%
-%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Skills style  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \NewDocumentCommand{\skillmark}{}{\rule{2ex}{2ex}}
 \NewDocumentCommand{\skill}{mO{3}}{%
-	% \parbox{\textwidth}{%
-		\vspace{0.4\baselineskip plus 1ex minus 1 ex}%
-		#1 
-		\hfill 
-		\foreach \x in {1,2,3}{%
-			\hspace{\smallskipamount} \ifnumgreater{\x}{#2}{\color{body!30}}{\color{body}}\skillmark
-		}%
-		\par
-	% }%
+	\vspace{0.4\baselineskip plus 1ex minus 1 ex}%
+	#1 
+	\hfill 
+	\foreach \x in {1,2,3}{%
+		\hspace{\smallskipamount} \ifnumgreater{\x}{#2}{\color{body!30}}{\color{body}}\skillmark
+	}%
+	\par
 }
-% \titleformat{\subsubsection}[wrap]
-% {\sffamily}
-% {}{0em}{}[\vspace{-1pt}]
-
-% \titlespacing{\subsubsection}{12pc}{1.5ex plus .1ex minus .2ex}{1pc}
-%}
-%
-\NewDocumentCommand{\cventry}{mmm+mO{0ex}}{%
-\par
-\cvitem{\small\sffamily#1}{\textsf{\textbf{#2\notemptythen{#3}{,}}#3}\notemptythen{#2#3}{\vspace{#5}\par}#4}
-\vspace{1ex}
-\par
-}
-%
-%
-\NewDocumentCommand{\notemptythen}{m+m}{%
-	\if\relax\detokenize{#1}\relax
-		\relax
-	\else
-		#2
-	\fi
-}
-%
-%
-\NewEnviron{hentrylist}{%
-	\parbox{\coll}{\begin{itemize*}[itemjoin=\hspace{2ex}]\BODY\end{itemize*}}
-}
-%
-%
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%  List style  %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 \newlength{\entrytopspace}
 \setlength{\entrytopspace}{0.4\baselineskip}
 \NewDocumentEnvironment{entrylist}{s}{%
 	\renewcommand{\labelitemi}{\color{black!70}\rule{1ex}{1ex}}%
 	\IfBooleanT{#1}{%
-		\vspace{-\entrytopspace}
+		\vspace{-\entrytopspace}%
 	}
 	\begin{itemize}[leftmargin=*,itemsep=-2pt, topsep=\entrytopspace]
 }{%
@@ -256,9 +167,6 @@
 }
 %
 %
-
-\newcommand{\desclabel}[1]{\emph{#1:}}
-
 
 
 
