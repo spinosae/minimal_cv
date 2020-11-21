@@ -6,9 +6,9 @@
 \LoadClass{article}
 %
 %
-\RequirePackage[left=1.5cm,right=1cm,top=1.5cm,bottom=2cm]{geometry}
+\RequirePackage[left=1.25cm,right=1.25cm,top=1.5cm,bottom=2cm]{geometry}
 \RequirePackage{graphicx}
-\RequirePackage{color}
+\RequirePackage{xcolor}
 \RequirePackage{array}
 \RequirePackage{calc}
 \RequirePackage[inline]{enumitem}
@@ -17,14 +17,22 @@
 \RequirePackage{xparse}
 \RequirePackage{graphbox}
 \RequirePackage{titlesec}
+\RequirePackage{fontawesome}
+\RequirePackage{etoolbox}
+\RequirePackage{pgffor}
 %\RequirePackage[none]{hyphenat}
+%
+\colorlet{accent}{blue!70!black}
+\colorlet{heading}{black}
+\colorlet{emphasis}{black}
+\colorlet{body}{black!80!white}
 %
 \newlength{\cola}
 \newlength{\colb}
 %
 \NewDocumentCommand{\recalculate}{}{%
 	\setlength{\cola}{0.25\textwidth}
-	\setlength{\colb}{\textwidth - \cola - 4pt}
+	\setlength{\colb}{\textwidth - \cola - 5mm}
 }
 \recalculate
 %
@@ -63,13 +71,7 @@
 		\sffamily
 		\textbf{\large\@name}
 		\par
-		\begin{itemize*}[itemjoin=\hspace{3ex},label=\rule{4pt}{4pt}]
-			\item \mbox{\@phone}
-			\item \mbox{\@email}
-			\item \mbox{\@github}
-			\item \mbox{\@website}
-			\item \mbox{\@address}
-		\end{itemize*}
+		\@statement
 	\end{flushleft}
 }
 %
@@ -92,15 +94,62 @@
 }
 %
 %
+\NewEnviron{leftcol}{%
+	\noindent
+	\begin{minipage}[t]{\colb}
+		\raggedright \
+		\BODY
+	\end{minipage}
+	\hfill
+}
+\NewEnviron{rightcol}{%
+	\newlength{\availablev}
+	\setlength{\availablev}{%
+		\the\dimexpr\textheight-0.2in-\pagetotal\relax
+	}%
+	\begin{minipage}[t]{\cola}
+		\ \BODY
+	\end{minipage}
+}
+%
+%
 \NewDocumentCommand{\showinfol}{O{3em}}{%
 	\newlength{\logowidth}
-	\setlength{\logowidth}{12mm}
-	\begin{minipage}{\logowidth}
+	\setlength{\logowidth}{14mm}
+	\noindent
+	\begin{minipage}[b][][c]{\colb}
 		\includegraphics[align=c,width=\logowidth]{\@logo}
+		\hfill
+		\begin{minipage}[c]{\linewidth - \logowidth - 2ex}
+			% \raggedright
+			\sffamily
+			\textbf{\sffamily\large\@name}
+			\par
+			\vspace{1ex}
+			\@statement
+		\end{minipage}
 	\end{minipage}
-	\hspace{2ex}
-	\begin{minipage}{\linewidth - \logowidth - 2em}
-		\infolist
+	\hfill
+	\begin{minipage}[b]{\cola}
+		% \sffamily
+		% \begin{tabular}[b]{R{\linewidth - 2em} p{2em}}
+		% 	\@phone & \faPhone\\
+		% 	\@email & \faEnvelope\\
+		% 	\@address & \faHome\\
+		% \end{tabular}
+		\begin{itemize}[leftmargin=*,itemsep=-2pt,label={}] \raggedleft
+			\sffamily
+			% \item[\faPhone] \@phone 
+			% \item[\faInbox] \@email
+			% % \item \mbox{\@github}
+			% % \item \mbox{\@website}
+			% \item[\faHome] \@address
+			\item \@phone 
+			\item \@email
+			% \item \mbox{\@github}
+			% \item \mbox{\@website}
+			\item \@address
+		\end{itemize}
 	\end{minipage}
 }
 %
@@ -131,12 +180,40 @@
 % 	\par
 % 	\vspace{-0.2em} %
 % }
-\titleformat{\section}{\sffamily\bfseries}{}{0pt}{\MakeUppercase}[\rule{\textwidth}{1pt}]
+\titleformat{\section}{\sffamily\bfseries}{}{0pt}{\MakeUppercase}[\titlerule]
+\titlespacing*{\section}{0pt}{1em}{1em}
 \RenewDocumentCommand{\subsection}{m o o}{%
-	\addcontentsline{toc}{subsection}{#1 #2 #3}
-	\textsf{\textbf{#1}, #2 \hfill \small{#3}}
+	\phantomsection
+	\addcontentsline{toc}{subsection}{#1 \IfNoValueF{#2}{#2}}%
+	\textsf{\textbf{#1} \IfNoValueF{#2}{#2} \dotfill \IfNoValueF{#3}{\small{#3}}}%
+	\par
+	\smallskip
 }
-\titleformat{\subsubsection}{\sffamily\centering}{}{0pt}{}
+% \titlespacing*{\subsection}{0pt}{2ex plus 4pt minus 4pt}{2ex plus 4pt minus 4pt}
+% \NewDocumentCommand{\titleemph}{m}{$\ast$ #1 $\ast$}
+% \titleformat{\subsubsection}{\mdseries\sffamily\centering}{}{0pt}{}
+\RenewDocumentCommand{\subsubsection}{m}{%
+	\phantomsection
+	\addcontentsline{toc}{subsubsection}{#1}%
+	{\centering \textsf{\textmd{$\ast$ #1 $\ast$}} \par}%
+	\smallskip
+}
+% \titlespacing*{\subsubsection}{0pt}{1em}{1em}
+% \titlespacing*{\subsubsection}{0pt}{0.1\baselineskip plus 4pt minus 4pt}{0.4\baselineskip plus 4pt minus 4pt}
+%
+%
+\NewDocumentCommand{\skillmark}{}{\rule{2ex}{2ex}}
+\NewDocumentCommand{\skill}{mO{3}}{%
+	% \parbox{\textwidth}{%
+		\vspace{0.4\baselineskip plus 1ex minus 1 ex}%
+		#1 
+		\hfill 
+		\foreach \x in {1,2,3}{%
+			\hspace{\smallskipamount} \ifnumgreater{\x}{#2}{\color{body!30}}{\color{body}}\skillmark
+		}%
+		\par
+	% }%
+}
 % \titleformat{\subsubsection}[wrap]
 % {\sffamily}
 % {}{0em}{}[\vspace{-1pt}]
@@ -166,23 +243,20 @@
 }
 %
 %
-\NewEnviron{entrylist}{%
-	\parbox{\colb}{\begin{itemize}[leftmargin=*,itemsep=-2pt]\raggedright\BODY\end{itemize}}
+\newlength{\entrytopspace}
+\setlength{\entrytopspace}{0.4\baselineskip}
+\NewDocumentEnvironment{entrylist}{s}{%
+	\renewcommand{\labelitemi}{\color{black!70}\rule{1ex}{1ex}}%
+	\IfBooleanT{#1}{%
+		\vspace{-\entrytopspace}
+	}
+	\begin{itemize}[leftmargin=*,itemsep=-2pt, topsep=\entrytopspace]
+}{%
+	\end{itemize}%
 }
 %
 %
-\NewEnviron{leftcol}{%
-	\noindent
-	\begin{minipage}[t]{\colb}
-		\raggedright
-		\BODY
-	\end{minipage}
-}
-\NewEnviron{rightcol}{%
-	\begin{minipage}[t]{\cola}
-		\BODY
-	\end{minipage}
-}
+
 \newcommand{\desclabel}[1]{\emph{#1:}}
 
 
