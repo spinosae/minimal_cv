@@ -27,14 +27,6 @@
 \colorlet{emphasis}{black}
 \colorlet{body}{black!80!white}
 %
-\newlength{\cola}
-\newlength{\colb}
-%
-\NewDocumentCommand{\recalculate}{}{%
-	\setlength{\cola}{0.25\textwidth}
-	\setlength{\colb}{\textwidth - \cola - 5mm}
-}
-\recalculate
 %
 \def\@undef{\color{red} undefined}
 \def\@name{\@undef}
@@ -65,7 +57,6 @@
 }
 %
 %
-
 \NewDocumentCommand{\infolist}{}{%
 	\begin{flushleft}
 		\sffamily
@@ -82,24 +73,33 @@
 \NewDocumentCommand{\showinfo}{sO{3em}}{%
 	\par
 	\ifx#1\BooleanFalse
-		\cvitem*{\getlogo[12mm]}{\parbox{\colb}{\infolist}}
+		\cvitem*{\getlogo[12mm]}{\parbox{\coll}{\infolist}}
 		\par
 		\vspace{-1ex}
-		\cvitem*{}{\parbox{\colb}{\emph{\@statement}}}
+		\cvitem*{}{\parbox{\coll}{\emph{\@statement}}}
 	\else
-		\parbox{\colb}{\infolist}
+		\parbox{\coll}{\infolist}
 	\fi
 	\par
 	\vspace{#2}
 }
 %
 %
-\NewEnviron{leftcol}{%
+\newlength{\colr}
+\newlength{\coll}
+\NewDocumentCommand{\layout}{m O{5mm}}{%
+       \setlength{\coll}{#1}
+       \setlength{\colr}{\textwidth - \coll - #2}
+}
+\layout{0.7\textwidth}
+%
+%
+\NewDocumentEnvironment{leftcol}{O{0.7}}{%
 	\noindent
-	\begin{minipage}[t]{\colb}
+	\begin{minipage}[t]{\coll}
 		\raggedright \
-		\BODY
-	\end{minipage}
+}{%
+	\end{minipage}%
 	\hfill
 }
 \NewEnviron{rightcol}{%
@@ -107,7 +107,7 @@
 	\setlength{\availablev}{%
 		\the\dimexpr\textheight-0.2in-\pagetotal\relax
 	}%
-	\begin{minipage}[t]{\cola}
+	\begin{minipage}[t]{\colr}
 		\ \BODY
 	\end{minipage}
 }
@@ -117,7 +117,7 @@
 	\newlength{\logowidth}
 	\setlength{\logowidth}{14mm}
 	\noindent
-	\begin{minipage}[b][][c]{\colb}
+	\begin{minipage}[b][][c]{\coll}
 		\includegraphics[align=c,width=\logowidth]{\@logo}
 		\hfill
 		\begin{minipage}[c]{\linewidth - \logowidth - 2ex}
@@ -130,7 +130,7 @@
 		\end{minipage}
 	\end{minipage}
 	\hfill
-	\begin{minipage}[b]{\cola}
+	\begin{minipage}[b]{\colr}
 		% \sffamily
 		% \begin{tabular}[b]{R{\linewidth - 2em} p{2em}}
 		% 	\@phone & \faPhone\\
@@ -165,7 +165,7 @@
 %
 \NewDocumentCommand{\cvitem}{sm+m}{%
 	\setlength{\currentparskip}{\parskip}
-	\begin{tabular}{R{\cola}!{\notstarthen{#1}{\vline height +8pt width 1pt }}L{\colb}}%
+	\begin{tabular}{R{\colr}!{\notstarthen{#1}{\vline height +8pt width 1pt }}L{\coll}}%
 		#2 & #3
 	\end{tabular}
 }
@@ -239,7 +239,7 @@
 %
 %
 \NewEnviron{hentrylist}{%
-	\parbox{\colb}{\begin{itemize*}[itemjoin=\hspace{2ex}]\BODY\end{itemize*}}
+	\parbox{\coll}{\begin{itemize*}[itemjoin=\hspace{2ex}]\BODY\end{itemize*}}
 }
 %
 %
