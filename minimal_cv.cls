@@ -60,7 +60,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%
 \newlength{\colr}
 \newlength{\coll}
-\NewDocumentCommand{\layout}{m O{5mm}}{%
+\NewDocumentCommand{\layout}{m O{7mm}}{%
        \setlength{\coll}{#1}
        \setlength{\colr}{\textwidth - \coll - #2}
 }
@@ -127,9 +127,9 @@
 \RenewDocumentCommand{\subsection}{m o o}{%
 	\phantomsection
 	\addcontentsline{toc}{subsection}{#1 \IfNoValueF{#2}{#2}}%
-	\textsf{\textbf{#1} \IfNoValueF{#2}{#2} \dotfill \IfNoValueF{#3}{\small{#3}}}%
+	\textsf{\textbf{#1}\IfNoValueF{#2}{, #2} \dotfill \IfNoValueF{#3}{\small{#3}}}%
 	\par
-	\smallskip
+	\@ifnextchar\subsubsection{\medskip}{\smallskip}
 }
 % Subsubsection
 \RenewDocumentCommand{\subsubsection}{m}{%
@@ -157,11 +157,11 @@
 \newlength{\entrytopspace}
 \setlength{\entrytopspace}{0.4\baselineskip}
 \NewDocumentEnvironment{entrylist}{s}{%
-	\renewcommand{\labelitemi}{\color{black!70}\rule{1ex}{1ex}}%
+	% \renewcommand{\labelitemi}{\color{black!70}\rule{1ex}{1ex}}%
 	\IfBooleanT{#1}{%
 		\vspace{-\entrytopspace}%
 	}
-	\begin{itemize}[leftmargin=*,itemsep=-2pt, topsep=\entrytopspace]
+	\begin{itemize}[leftmargin=*,itemsep=-2pt, topsep=\entrytopspace, partopsep=0pt]
 }{%
 	\end{itemize}%
 }
