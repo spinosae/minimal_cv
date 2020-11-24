@@ -123,17 +123,24 @@
 % Section
 \titleformat{\section}{\sffamily\bfseries}{}{0pt}{\MakeUppercase}[\titlerule]
 \titlespacing*{\section}{0pt}{1em}{1em}
+\let\oldsection\section
+\RenewDocumentCommand{\section}{o m}{%
+	\oldsection[\IfNoValueTF{#1}{#2}{#1}]{#2}
+	\@ifnextchar\subsection{\vspace{-\smallskipamount}}{}
+}
 % Subsection
-\RenewDocumentCommand{\subsection}{m o o}{%
+\RenewDocumentCommand{\subsection}{o m o o}{%
 	\phantomsection
-	\addcontentsline{toc}{subsection}{#1 \IfNoValueF{#2}{#2}}%
-	\textsf{\textbf{#1}\IfNoValueF{#2}{, #2} \dotfill \IfNoValueF{#3}{\small{#3}}}%
+	\smallskip
+	\addcontentsline{toc}{subsection}{\IfNoValueTF{#1}{#2}{#1} \IfNoValueF{#3}{#3}}%
+	\textsf{\textbf{#2}\IfNoValueF{#3}{, #3} \dotfill \IfNoValueF{#4}{\small{#4}}}%
 	\par
 	\@ifnextchar\subsubsection{\medskip}{\smallskip}
 }
 % Subsubsection
 \RenewDocumentCommand{\subsubsection}{m}{%
 	\phantomsection
+	\smallskip
 	\addcontentsline{toc}{subsubsection}{#1}%
 	{\centering \textsf{\textmd{$\ast$ #1 $\ast$}} \par}%
 	\smallskip
