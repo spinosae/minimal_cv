@@ -6,7 +6,7 @@
 \LoadClass{article}
 %
 %
-\RequirePackage[left=1.25cm,right=1.25cm,top=1.5cm,bottom=2cm]{geometry}
+\RequirePackage[left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm]{geometry}
 \RequirePackage{graphicx}
 \RequirePackage{xcolor}
 \RequirePackage{array}
