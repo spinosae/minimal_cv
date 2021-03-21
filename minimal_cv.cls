@@ -67,7 +67,7 @@
 \layout{0.7\textwidth}
 %
 %
-\NewDocumentEnvironment{leftcol}{O{0.7}}{%
+\NewDocumentEnvironment{leftcol}{}{%
 	\noindent
 	\begin{minipage}[t]{\coll}\raggedright \
 }{%
@@ -143,7 +143,7 @@
 	\smallskip
 	\addcontentsline{toc}{subsubsection}{#1}%
 	{\centering \textsf{\textmd{$\ast$ #1 $\ast$}} \par}%
-	\smallskip
+	\medskip
 }
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Skills style  %%%%
